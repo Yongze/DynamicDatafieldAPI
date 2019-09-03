@@ -1,0 +1,168 @@
+{
+	"AWSTemplateFormatVersion" : "2010-09-09",
+	"Transform" : "AWS::Serverless-2016-10-31",
+	"Description" : "An AWS Serverless Application.",
+
+	"Resources" : {
+
+		"Get" : {
+		"Type" : "AWS::Serverless::Function",
+			"Properties": {
+				"Handler": "DynamicDatafieldAPI::DynamicDatafieldAPI.Functions::Get",
+				"Runtime": "dotnetcore2.1",
+				"CodeUri": "",
+				"MemorySize": 256,
+				"Timeout": 30,
+				"Role": null,
+				"Policies": [ "AWSLambdaBasicExecutionRole" ],
+				"Events": {
+					"PutResource": {
+						"Type": "Api",
+						"Properties": {
+							"Path": "/",
+							"Method": "GET"
+						}
+					}
+				}
+			}
+		},
+		"SaveToDB" : {
+		  "Type" : "AWS::Serverless::Function",
+		  "Properties": {
+			"Handler": "DynamicDatafieldAPI::DynamicDatafieldAPI.Functions::Save",
+			"Runtime": "dotnetcore2.1",
+			"CodeUri": "",
+			"MemorySize": 256,
+			"Timeout": 30,
+			"Role": null,
+			"Policies": [ "AWSLambdaBasicExecutionRole", "AmazonDynamoDBFullAccess" ],
+			"Events": {
+			  "PutResource": {
+				"Type": "Api",
+				"Properties": {
+				  "Path": "/dbSave",
+				  "Method": "POST"
+				}
+			  }
+			}
+		  }
+		},
+
+		"Delete" : {
+		  "Type" : "AWS::Serverless::Function",
+		  "Properties": {
+			"Handler": "DynamicDatafieldAPI::DynamicDatafieldAPI.Functions::Delete",
+			"Runtime": "dotnetcore2.1",
+			"CodeUri": "",
+			"MemorySize": 256,
+			"Timeout": 30,
+			"Role": null,
+			"Policies": [ "AWSLambdaBasicExecutionRole", "AmazonDynamoDBFullAccess" ],
+			"Events": {
+			  "PutResource": {
+				"Type": "Api",
+				"Properties": {
+				  "Path": "/Delete",
+				  "Method": "POST"
+				}
+			  }
+			}
+		  }
+		},
+
+		"isExisting" : {
+		  "Type" : "AWS::Serverless::Function",
+		  "Properties": {
+			"Handler": "DynamicDatafieldAPI::DynamicDatafieldAPI.Functions::isExisting",
+			"Runtime": "dotnetcore2.1",
+			"CodeUri": "",
+			"MemorySize": 256,
+			"Timeout": 30,
+			"Role": null,
+			"Policies": [ "AWSLambdaBasicExecutionRole", "AmazonDynamoDBFullAccess" ],
+			"Events": {
+			  "PutResource": {
+				"Type": "Api",
+				"Properties": {
+				  "Path": "/isExisting",
+				  "Method": "POST"
+				}
+			  }
+			}
+		  }
+		},
+
+		"Print" : {
+		  "Type" : "AWS::Serverless::Function",
+		  "Properties": {
+			"Handler": "DynamicDatafieldAPI::DynamicDatafieldAPI.Functions::Print",
+			"Runtime": "dotnetcore2.1",
+			"CodeUri": "",
+			"MemorySize": 256,
+			"Timeout": 30,
+			"Role": null,
+			"Policies": [ "AWSLambdaBasicExecutionRole", "AmazonDynamoDBFullAccess" ],
+			"Events": {
+			  "PutResource": {
+				"Type": "Api",
+				"Properties": {
+				  "Path": "/Print",
+				  "Method": "POST"
+				}
+			  }
+			}
+		  }
+		},
+
+		"Read" : {
+		  "Type" : "AWS::Serverless::Function",
+		  "Properties": {
+			"Handler": "DynamicDatafieldAPI::DynamicDatafieldAPI.Functions::Read",
+			"Runtime": "dotnetcore2.1",
+			"CodeUri": "",
+			"MemorySize": 256,
+			"Timeout": 30,
+			"Role": null,
+			"Policies": [ "AWSLambdaBasicExecutionRole", "AmazonDynamoDBFullAccess" ],
+			"Events": {
+			  "PutResource": {
+				"Type": "Api",
+				"Properties": {
+				  "Path": "/Read",
+				  "Method": "GET"
+				}
+			  }
+			}
+		  }
+		},
+
+		"GetLayoutContentByID" : {
+		  "Type" : "AWS::Serverless::Function",
+		  "Properties": {
+			"Handler": "DynamicDatafieldAPI::DynamicDatafieldAPI.Functions::GetLayoutContentByID",
+			"Runtime": "dotnetcore2.1",
+			"CodeUri": "",
+			"MemorySize": 256,
+			"Timeout": 30,
+			"Role": null,
+			"Policies": [ "AWSLambdaBasicExecutionRole", "AmazonDynamoDBFullAccess", "AmazonS3FullAccess" ],
+			"Events": {
+			  "PutResource": {
+				"Type": "Api",
+				"Properties": {
+				  "Path": "/GetLayoutContentByID",
+				  "Method": "POST"
+				}
+			  }
+			}
+		  }
+		}
+	},
+
+	"Outputs" : {
+		"ApiURL" : {
+			"Description" : "API endpoint URL for Prod environment",
+			"Value" : { "Fn::Sub" : "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/" }
+		}
+	}
+}
